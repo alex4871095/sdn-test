@@ -1,0 +1,303 @@
+{
+    "dpid": 147057213550,
+    "cookie": 0,
+    "cookie_mask": 0,
+    "table_id": 0,
+    "idle_timeout": 0,
+    "hard_timeout": 0,
+    "priority": 10,
+    "flags": 1,
+    "match":{
+            },
+    "actions":[
+        {
+            "type":"GOTO_TABLE",
+            "table_id":1
+        }
+    ]
+},
+{
+    "dpid": 147057213550,
+    "cookie": 0,
+    "cookie_mask": 0,
+    "table_id": 1,
+    "idle_timeout": 0,
+    "hard_timeout": 0,
+    "priority": 10,
+    "flags": 1,
+    "match":{
+        "dl_vlan":500
+            },
+    "actions":[
+            {
+            "type": "WRITE_METADATA",
+            "metadata": "0x1",
+            "metadata_mask": "0x1"
+        },
+        { 
+            "type":"GOTO_TABLE",
+            "table_id":2
+        }
+    ]
+},
+{
+    "dpid": 147057213550,
+    "cookie": 0,
+    "cookie_mask": 0,
+    "table_id": 2,
+    "idle_timeout": 0,
+    "hard_timeout": 0,
+    "priority": 10,
+    "flags": 1,
+    "match":{
+            "metadata":1
+            },
+    "actions":[
+        {
+            "type":"GOTO_TABLE",
+            "table_id":3
+        }
+    ]
+},
+{
+    "dpid": 147057213550,
+    "cookie": 0,
+    "cookie_mask": 0,
+    "table_id": 3,
+    "idle_timeout": 0,
+    "hard_timeout": 0,
+    "priority": 10,
+    "flags": 1,
+    "match":{
+            "dl_vlan": 500,
+            "metadata": 1
+            },
+    "actions":[
+        {
+            "type":"OUTPUT",
+            "port":3
+        }
+    ]
+},
+{
+    "dpid": 147057213550,
+    "cookie": 0,
+    "cookie_mask": 0,
+    "table_id": 3,
+    "idle_timeout": 0,
+    "hard_timeout": 0,
+    "priority": 10,
+    "flags": 1,
+    "match":{
+            "in_port": 10,
+            "metadata": 1
+            },
+    "actions":[
+        {
+            "type":"OUTPUT",
+            "port":3
+        }
+    ]
+}
+
+----
+NS202# show status flow tableid 0
+        [##################################################] 100%       Flow entries
+
+Table 0 (1 entries)
+[FLOW_ENTRIES]
+    [FLOW_ENTRIES1]
+        Timestamp        = Thu Jul  7 10:33:19 2016
+        ControllerGroup  = 2
+        ControllerId     = 1
+        ofp_version      = 4
+        Priority         = 10
+        Idle_timeout     = 0
+        Hard_timeout     = 0
+        Packet_count     = 457650729
+        Byte_count       = 174211895890
+        Cookie           = 0
+        Send_flow_rem    = true
+        [MATCHFIELDS]
+            all match
+        [INSTRUCTIONS]
+            [OFPIT_GOTO_TABLE]
+                table = 1
+
+
+NS202# show status flow tableid 1
+        [##################################################] 100%       Flow entries
+
+Table 1 (1 entries)
+[FLOW_ENTRIES]
+    [FLOW_ENTRIES1]
+        Timestamp        = Thu Jul  7 10:33:33 2016
+        ControllerGroup  = 2
+        ControllerId     = 1
+        ofp_version      = 4
+        Priority         = 10
+        Idle_timeout     = 0
+        Hard_timeout     = 0
+        Packet_count     = 323284923
+        Byte_count       = 117187909338
+        Cookie           = 0
+        Send_flow_rem    = true
+        [MATCHFIELDS]
+            OFPXMT_OFB_VLAN_VID = 500(OFPVID_PRESENT=1)
+        [INSTRUCTIONS]
+            [OFPIT_WRITE_METADATA]
+                meta = 0x1 & 0x1
+        [INSTRUCTIONS]
+            [OFPIT_GOTO_TABLE]
+                table = 2
+
+NS202# show status flow tableid 2
+        [##################################################] 100%       Flow entries
+
+Table 2 (1 entries)
+[FLOW_ENTRIES]
+    [FLOW_ENTRIES1]
+        Timestamp        = Thu Jul  7 10:33:49 2016
+        ControllerGroup  = 2
+        ControllerId     = 1
+        ofp_version      = 4
+        Priority         = 10
+        Idle_timeout     = 0
+        Hard_timeout     = 0
+        Packet_count     = 335123119
+        Byte_count       = 121477721102
+        Cookie           = 0
+        Send_flow_rem    = true
+        [MATCHFIELDS]
+            OFPXMT_OFB_METADATA = 0x1
+        [INSTRUCTIONS]
+            [OFPIT_GOTO_TABLE]
+                table = 3
+
+NS202# show status flow tableid 3
+        [##################################################] 100%       Flow entries
+
+Table 3 (2 entries)
+[FLOW_ENTRIES]
+    [FLOW_ENTRIES1]
+        Timestamp        = Thu Jul  7 11:00:28 2016
+        ControllerGroup  = 2
+        ControllerId     = 1
+        ofp_version      = 4
+        Priority         = 10
+        Idle_timeout     = 0
+        Hard_timeout     = 0
+        Packet_count     = 0
+        Byte_count       = 0
+        Cookie           = 0
+        Send_flow_rem    = true
+        [MATCHFIELDS]
+            OFPXMT_OFB_IN_PORT = 10
+            OFPXMT_OFB_METADATA = 0x1
+        [INSTRUCTIONS]
+            [OFPIT_APPLY_ACTIONS]
+                 [ACTIONS]
+                    [OFPAT_OUTPUT]
+                        port = 3
+    [FLOW_ENTRIES2]
+        Timestamp        = Thu Jul  7 10:34:02 2016
+        ControllerGroup  = 2
+        ControllerId     = 1
+        ofp_version      = 4
+        Priority         = 10
+        Idle_timeout     = 0
+        Hard_timeout     = 0
+        Packet_count     = 0
+        Byte_count       = 0
+        Cookie           = 0
+        Send_flow_rem    = true
+        [MATCHFIELDS]
+            OFPXMT_OFB_METADATA = 0x1
+            OFPXMT_OFB_VLAN_VID = 500(OFPVID_PRESENT=1)
+        [INSTRUCTIONS]
+            [OFPIT_APPLY_ACTIONS]
+                 [ACTIONS]
+                    [OFPAT_OUTPUT]
+                        port = 3
+
+
+----
+
+NS202# show stats table tableid 0
+        +--------------+
+        | Table id: 0  |
+        +--------------+
+        Active count    : 3
+        Max entries     : 4096
+        Lookup count    : 135346101051
+        Match count     : 5707450
+NS202#
+NS202# show stats table tableid 1
+        +--------------+
+        | Table id: 1  |
+        +--------------+
+        Active count    : 0
+        Max entries     : 4096
+        Lookup count    : 135347086473
+        Match count     : 135346043451
+NS202#
+NS202# show stats table tableid 2
+        +--------------+
+        | Table id: 2  |
+        +--------------+
+        Active count    : 0
+        Max entries     : 15360
+        Lookup count    : 0
+        Match count     : 0
+NS202#
+NS202# show stats table tableid 3
+        +--------------+
+        | Table id: 3  |
+        +--------------+
+        Active count    : 0
+        Max entries     : 15360
+        Lookup count    : 0
+        Match count     : 0
+NS202#
+
+NS202# show config table tableid 0
+        +--------------+
+        | Table id: 0  |
+        +--------------+
+        Match fields (20):
+          0             : OFPXMT_OFB_IN_PORT
+          1             : OFPXMT_OFB_IN_PHY_PORT
+          3             : OFPXMT_OFB_ETH_DST
+          4             : OFPXMT_OFB_ETH_SRC
+          5             : OFPXMT_OFB_ETH_TYPE
+          6             : OFPXMT_OFB_VLAN_VID
+          7             : OFPXMT_OFB_VLAN_PCP
+          34            : OFPXMT_OFB_MPLS_LABEL
+          21            : OFPXMT_OFB_ARP_OP
+          10            : OFPXMT_OFB_IP_PROTO
+          11            : OFPXMT_OFB_IPV4_SRC
+          12            : OFPXMT_OFB_IPV4_DST
+          19            : OFPXMT_OFB_ICMPV4_TYPE
+          20            : OFPXMT_OFB_ICMPV4_CODE
+          26            : OFPXMT_OFB_IPV6_SRC
+          27            : OFPXMT_OFB_IPV6_DST
+          29            : OFPXMT_OFB_ICMPV6_TYPE
+          30            : OFPXMT_OFB_ICMPV6_CODE
+          13, 15, 17    : OFPXMT_OFB_TCP/UDP/SCTP_SRC
+          14, 16, 18    : OFPXMT_OFB_TCP/UDP/SCTP_DST
+        Name            : novi_table_0
+        Metadata match  : 0xffffffff
+        Metadata write  : 0xffffffff
+        Active entries  : 3
+        Max entries     : 4096
+        Experimenter udp payload size: 1
+        Experimenter udp payload offset: 0
+        Experimenter ip payload size: 1
+        Experimenter ip payload offset: 0
+        Eviction status: off
+        Eviction flag: 0
+        Vacancy status: off
+        Current vacancy : 99
+        Vacancy down: 0
+        Vacancy up: 0
+NS202#
